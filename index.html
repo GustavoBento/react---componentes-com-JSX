@@ -49,8 +49,8 @@
         function CampoDeDigitacao({label, tipo, placeholder, value, setValor}) {
             return (
                 <div class="form__campo-digitacao">
-                    <label for="email"> {label} </label>   
-                    <input type= {tipo}  id="email" placeholder={placeholder} value={value} 
+                    <label for={tipo}> {label} </label>   
+                    <input type= {tipo}  id={tipo} placeholder={placeholder} value={value} 
                     onChange={(evento) => setValor(evento.target.value)}    required />
                 </div>
             )
@@ -62,26 +62,81 @@
             )
         }
 
-        function substituiValorDoCampo(novoValor) {
-            email = novoValor
-            console.log(email)
+        function CheckBox() {
+            return (
+                <>
+                    <div className="form__campo-checkbox"> 
+                        <input type="CheckBox" id="lembrar" />
+                        <label for="lembrar" ></label>
+                    </div>
+                    <p className="form__opcoes-texto">Lembrar senha</p>
+                </>
+            )
         }
 
+        function Texto({classe, children}) {
+            return(
+                <p className={classe}>{children} </p>
+            )
+        }
+
+        function ItemRedesSociais({link, nome}) {
+            return (
+                <li>
+                    <a href={link}> 
+                        <img src={`./img/${nome}.svg`} alt={`Icone do ${nome}`}/>
+                        {nome}
+                    </a>
+                </li>
+            )
+        }
+
+        function Link({children}) {
+            return (
+                <a href="#" className ="container-links__link">{children} </a>
+            )
+        }
+
+
         function PaginaDeLogin() {
+            const [email, setEmail] = React.useState('')
+            const [senha, setSenha] = React.useState('')
+
+            const handleSubmit = (event) => {
+                event.preventDefault()
+                console.log("Email " + email)
+                console.log("Senha " + senha)
+            }
+
             return (
                 <div className="container-login">
                     <img src="img/imagem-login.png" alt="Uma mulher negra de cabelos crespos com óculos usando o computador e o icone da CodeConnect"/> 
                     <section>
-                        <form>
+                        <form onSubmit={handleSubmit}>
                             <Titulo> Login </Titulo>
                             <Subtitulo> Boas-vindas! Faça seu login.</Subtitulo>
                             <CampoDeDigitacao label="E-mail ou usuário"
                             tipo="email"  placeholder="Digite seu e-mail ou sua senha." 
                             value={email}
-                            setValor={substituiValorDoCampo}   />
-                            <CampoDeDigitacao label="Senha" tipo="password" placeholder="Digite sua senha." />
+                            setValor={setEmail}   />
+                            <CampoDeDigitacao label="Senha" tipo="password" placeholder="Digite sua senha." value={senha} setValor={setSenha} />
+                            <fieldset className="form__opcoes">
+                                <CheckBox />
+                                <p>
+                                    <a href="#" aria-label="Recuperar a senha esquecida">Esqueci a senha</a>
+                                </p>
+                            </fieldset>
                             <Botao> Login </Botao>
-                        </form>    
+                        </form>  
+                        <div className ="container-links"> 
+                            <Texto classe="container-links__titulo"> ou entre com outras contas. </Texto>
+                            <ul>
+                                <ItemRedesSociais link="https://www.github.com" nome="Github" />
+                                <ItemRedesSociais link="www.google.com" nome="Google" />
+                            </ul>
+                            <Texto classe="container-links__texto"> Ainda não tem conta? </Texto>
+                            <Link>Crie seu cadastro.</Link>
+                        </div>
                     </section>
                 </div>
             )
